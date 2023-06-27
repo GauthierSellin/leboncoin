@@ -104,7 +104,7 @@ final class ProductsViewModelTests: XCTestCase {
         // When
         productsViewModel.getProducts()
         RunLoop.current.run(until: Date(timeInterval: 0.01, since: Date()))
-        productsViewModel.filterProducts(selectedCategory: 1)
+        productsViewModel.filterProducts(newSelectedCategory: 1)
         RunLoop.current.run(until: Date(timeInterval: 0.01, since: Date()))
         
         // Then

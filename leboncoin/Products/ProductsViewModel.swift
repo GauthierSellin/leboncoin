@@ -18,6 +18,7 @@ final class ProductsViewModel {
     // MARK: - Private properties
     private(set) var allProducts = [Product]()
     private(set) var categories = [Category]()
+    private(set) var selectedCategory: Int?
     private let service: ProductsServiceProtocol
     
     @Published private(set) var state: LoadingState = .loading
@@ -42,8 +43,14 @@ final class ProductsViewModel {
         }
     }
     
-    func filterProducts(selectedCategory: Int) {
-        displayedProducts = selectedCategory == 0 ? allProducts : allProducts.filter { $0.categoryId == selectedCategory }
+    func filterProducts(newSelectedCategory: Int?) {
+        if newSelectedCategory == selectedCategory {
+            selectedCategory = nil
+        } else {
+            selectedCategory = newSelectedCategory
+        }
+        
+        displayedProducts = selectedCategory == nil ? allProducts : allProducts.filter { $0.categoryId == selectedCategory }
         state = .success
     }
     

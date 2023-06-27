@@ -8,7 +8,13 @@
 import Foundation
 
 extension Double {
+    private static let numberFormatter: NumberFormatter = {
+        $0.numberStyle = .currency
+        $0.locale = Locale(identifier: "fr_FR")
+        return $0
+    }(NumberFormatter())
+    
     var formatPrice: String {
-        String(format: "%.02f €", self).replacingOccurrences(of: ".", with: ",")
+        Double.numberFormatter.string(from: NSNumber(value: self)) ?? "\(self)"
     }
 }

@@ -10,7 +10,10 @@ import UIKit
 final class CategoryTableViewCell: UITableViewCell {
     
     // MARK: - UI properties
-    let titleLabel = UILabel()
+    let titleLabel: UILabel = {
+        $0.translatesAutoresizingMaskIntoConstraints = false
+        return $0
+    }(UILabel())
     
     // MARK: - Properties
     var isSelectedCategory = false {
@@ -37,16 +40,15 @@ final class CategoryTableViewCell: UITableViewCell {
 private extension CategoryTableViewCell {
     
     func configureView() {
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(titleLabel)
     }
     
     func configureLayout() {
         NSLayoutConstraint.activate([
-            titleLabel.leftAnchor.constraint(equalTo: leftAnchor, constant: 16),
-            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 16),
-            titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16),
-            titleLabel.rightAnchor.constraint(equalTo: rightAnchor, constant: -16)
+            titleLabel.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 16),
+            titleLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
+            titleLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
+            titleLabel.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -16),
         ])
     }
     

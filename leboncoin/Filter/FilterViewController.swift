@@ -8,7 +8,7 @@
 import UIKit
 
 protocol FilterViewControllerDelegate: AnyObject {
-    func dismissViewController(_ controller: UIViewController, selectedCategory: Int)
+    func dismissViewController(_ controller: UIViewController, selectedCategory: Int?)
 }
 
 final class FilterViewController: UIViewController {
@@ -24,16 +24,12 @@ final class FilterViewController: UIViewController {
     
     // MARK: - Private properties
     private var categories = [Category]()
-    private var selectedCategory = 0
-    
-    private var displayedCategories: [Category] {
-        [Category(id: 0, name: "Toutes les catégories")] + categories
-    }
+    private var selectedCategory: Int?
     
     weak var delegate: FilterViewControllerDelegate?
     
     // MARK: - Lifecycle
-    convenience init(categories: [Category], selectedCategory: Int) {
+    convenience init(categories: [Category], selectedCategory: Int?) {
         self.init()
         self.categories = categories
         self.selectedCategory = selectedCategory
@@ -80,24 +76,20 @@ extension FilterViewController: UITableViewDelegate { }
 // MARK: - UITableViewDataSource
 extension FilterViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        displayedCategories.count
+        categories.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: "categoryCell", for: indexPath) as? CategoryTableViewCell {
-            cell.titleLabel.text = displayedCategories[indexPath.row].name
-            cell.isSelectedCategory = indexPath.row == selectedCategory
+            cell.titleLabel.text = categories[indexPath.row].name
+            cell.isSelectedCategory = selectedCategory == categories[indexPath.row].id
             return cell
         }
         return UITableViewCell()
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        50
-    }
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        delegate?.dismissViewController(self, selectedCategory: indexPath.row)
+        delegate?.dismissViewController(self, selectedCategory: categories[indexPath.row].id)
     }
 }

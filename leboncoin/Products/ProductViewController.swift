@@ -50,6 +50,7 @@ final class ProductViewController: UIViewController {
         $0.text = "URGENT "
         $0.textColor = .red
         $0.layer.borderWidth = 1.0
+        $0.layer.cornerRadius = 16.0
         $0.layer.borderColor = UIColor.red.cgColor
         $0.font = .systemFont(ofSize: 14)
         return $0

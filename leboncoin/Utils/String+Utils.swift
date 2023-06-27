@@ -9,10 +9,9 @@ import Foundation
 
 extension String {
     private static let dateFormatter: DateFormatter = {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
-        return dateFormatter
-    }()
+        $0.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZZ"
+        return $0
+    }(DateFormatter())
     
     var formatDate: Date? {
         String.dateFormatter.date(from: self)

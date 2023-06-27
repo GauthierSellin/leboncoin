@@ -9,10 +9,10 @@ import Foundation
 
 extension Date {
     private static let dateFormatter: DateFormatter = {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd/MM/yyyy"
-        return dateFormatter
-    }()
+        $0.dateStyle = .medium
+        $0.locale = Locale(identifier: "fr_FR")
+        return $0
+    }(DateFormatter())
     
     var formatString: String {
         Date.dateFormatter.string(from: self)

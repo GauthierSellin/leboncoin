@@ -28,7 +28,6 @@ final class ProductsViewController: UIViewController {
     // MARK: - Private properties
     private let viewModel: ProductsViewModel
     private var subscriptions = Set<AnyCancellable>()
-    private var selectedCategory = 0 // 0 is for all categories
     
     // MARK: - Lifecycle
     
@@ -56,7 +55,7 @@ final class ProductsViewController: UIViewController {
 // MARK: - Private methods
 private extension ProductsViewController {
     @objc func filterTapped() {
-        let filterVC = FilterViewController(categories: viewModel.categories, selectedCategory: selectedCategory)
+        let filterVC = FilterViewController(categories: viewModel.categories, selectedCategory: viewModel.selectedCategory)
         filterVC.delegate = self
         let navController = UINavigationController(rootViewController: filterVC)
         present(navController, animated: true, completion: nil)
@@ -75,10 +74,7 @@ private extension ProductsViewController {
     func configureLayout() {
         NSLayoutConstraint.activate([
             loader.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            loader.centerYAnchor.constraint(equalTo: view.centerYAnchor)
-        ])
-        
-        NSLayoutConstraint.activate([
+            loader.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             tableView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
             tableView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
@@ -132,16 +128,13 @@ extension ProductsViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         
-        cell.configure(title: viewModel.displayedProducts[indexPath.row].title,
-                       category: viewModel.displayedProducts[indexPath.row].category,
-                       price: viewModel.displayedProducts[indexPath.row].price.formatPrice,
-                       isUrgent: viewModel.displayedProducts[indexPath.row].isUrgent,
-                       imageUrlString: viewModel.displayedProducts[indexPath.row].imagesUrl.small)
+        let productToDisplay = viewModel.displayedProducts[indexPath.row]
+        cell.configure(title: productToDisplay.title,
+                       category: productToDisplay.category,
+                       price: productToDisplay.price.formatPrice,
+                       isUrgent: productToDisplay.isUrgent,
+                       imageUrlString: productToDisplay.imagesUrl.small)
         return cell
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        100
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -155,10 +148,9 @@ extension ProductsViewController: UITableViewDataSource {
 
 // MARK: - FilterViewControllerDelegate
 extension ProductsViewController: FilterViewControllerDelegate {
-    func dismissViewController(_ controller: UIViewController, selectedCategory: Int) {
-        self.selectedCategory = selectedCategory
+    func dismissViewController(_ controller: UIViewController, selectedCategory: Int?) {
         controller.dismiss(animated: true) { [weak self] in
-            self?.viewModel.filterProducts(selectedCategory: selectedCategory)
+            self?.viewModel.filterProducts(newSelectedCategory: selectedCategory)
         }
     }
 }

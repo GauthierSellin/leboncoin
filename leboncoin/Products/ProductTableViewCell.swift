@@ -29,10 +29,11 @@ final class ProductTableViewCell: UITableViewCell {
     
     private let urgentLabel: UILabel = {
         $0.textAlignment = .center
-        $0.text = "URGENT "
+        $0.text = " URGENT  "
         $0.textColor = .red
         $0.layer.borderWidth = 1.0
         $0.layer.borderColor = UIColor.red.cgColor
+        $0.layer.cornerRadius = 10.0
         $0.font = .systemFont(ofSize: 14)
         return $0
     }(UILabel())
@@ -103,13 +104,14 @@ private extension ProductTableViewCell {
     
     func configureLayout() {
         NSLayoutConstraint.activate([
-            stackView.leftAnchor.constraint(equalTo: leftAnchor, constant: 8),
-            stackView.topAnchor.constraint(equalTo: topAnchor, constant: 8),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8),
+            stackView.leftAnchor.constraint(equalTo: contentView.leftAnchor, constant: 8),
+            stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
+            stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
             stackView.rightAnchor.constraint(equalTo: productImageView.leftAnchor, constant: -16),
-            productImageView.topAnchor.constraint(equalTo: topAnchor, constant: 8),
-            productImageView.rightAnchor.constraint(equalTo: rightAnchor, constant: -8),
-            productImageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8),
+            productImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
+            productImageView.rightAnchor.constraint(equalTo: contentView.rightAnchor, constant: -8),
+            productImageView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
+            productImageView.heightAnchor.constraint(equalToConstant: 100),
             productImageView.widthAnchor.constraint(equalTo: productImageView.heightAnchor),
             priceLabel.leftAnchor.constraint(equalTo: priceAndUrgentView.leftAnchor),
             priceLabel.topAnchor.constraint(equalTo: priceAndUrgentView.topAnchor),
